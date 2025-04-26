@@ -1,58 +1,96 @@
-# Svelte library
+# Let's Breakdown on How the Algorithm Works
+---
+## The main steps are as follows:
+> 1. Ask for the <ins>Allocation Matrix</ins>, the <ins>Max Requirement Matrix</ins>, and the <ins>Values of the Resources</ins>.
+> 2. Calculate the <ins>Needs Matrix</ins> by subtracting the Allocation Matrix from the Max Requirement Matrix element-wise.
+> 3. Calculate the <ins>Initial Available Resources</ins> by taking the sum of all the allocations, then subtracting from the Values of the Resources.
+> 4. Compare the current available resources to the Needs table row-wise from top to bottom (this is by choice).
+> 5. If each resource need is less than the available resource, note the process.
+>> 6. Add the allocation of the noted process to the available resources, then return to step 4 and ignore the noted process/es.
+>> 7. If all the processes have finished. Then the system is safe. [END]
+> 6. Else, that would mean that the currently available resources cannot accomodate the unfinished process/es.
+>> 7. Thus, a deadlock is detected. [END]
 
-Everything you need to build a Svelte library, powered by [`sv`](https://npmjs.com/package/sv).
+---
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+## Implementation
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+```Type
+function BankersAlgorithm(allocation: number[][], max: number[][], resources: number[]) {
+	const need = getNeed(allocation, max);
+	let sequence: number[] = [];
+	let available_sequence: number[][] = [];
+	available_sequence.push(getAvailable(allocation, resources));
+	const process_length = available_sequence[available_sequence.length - 1].length;
+	for (let i = 0; i < need.length; i++) {
+		let j = 0;
+		if (!sequence.includes(i)) {
+			for (j = 0; j < process_length; j++) {
+				if (need[i][j] > available_sequence[available_sequence.length - 1][j]) {
+					break;
+				}
+			}
+			if (process_length === j) {
+				sequence.push(i);
+        let new_available = getNewAvailable(allocation[i],available_sequence[available_sequence.length - 1]);
+        available_sequence.push(new_available);
+				i = -1;
+			}
+		}
+	}
+	if (sequence.length !== allocation.length) {
+		return { available_sequence, need: need, sequence: sequence, status: 2 };
+	} else {
+		return { available_sequence, need: need, sequence: sequence, status: 1 };
+	}
+}
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+We get the 3 inputs as parameters for the function and we try to find the Need Matrix and the Available Matrix.
+Namely, `getNeed(allocation, max)` and `getAvailable(allocation, resources)`.
+They are defined as follows:
 ```
+const getNeed = (allocation: number[][], max: number[][]) => {
+	let need: number[][] = [];
+	for (let i = 0; i < allocation.length; i++) {
+		need[i] = [];
+		for (let j = 0; j < allocation[i].length; j++) {
+			need[i][j] = max[i][j] - allocation[i][j];
+		}
+	}
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
-
-## Building
-
-To build your library:
-
-```bash
-npm run package
+	return need;
+};
 ```
-
-To create a production version of your showcase app:
-
-```bash
-npm run build
+This is clearly seen to loop around the two matrices and subtracting it element-wise.
 ```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
-
-```bash
-npm publish
+const getAvailable = (allocation: number[][], resources: number[]) => {
+	let available: number[] = [];
+	for (let i = 0; i < resources.length; i++) {
+		let sum = 0;
+		for (let j = 0; j < allocation.length; j++) {
+			sum += allocation[j][i];
+		}
+		available[i] = resources[i] - sum;
+	}
+	return available;
+};
 ```
+In this function, we first sum all the allocations then subtract it to the resources.
+
+Following the Algorithm, it will now enter the loop in checking the needs of each processes.
+If any of the resources cannot be satisfied, then it breaks the loop. Else, the process is noted to the `sequence` and the available resources is then pushed and 
+updated using the function `getNewAvailable(allocation: number[], resources: number[])` defined as follows:
+```
+const getNewAvailable = (allocation: number[], resources: number[]) => {
+	let available: number[] = [];
+	for (let i = 0; i < resources.length; i++) {
+		available[i] = resources[i] + allocation[i];
+	}
+	return available;
+};
+```
+Once updated, the loop hits a reset to again check all the processes with the new available resources.
+
+At the end, the implementation will return either `status = 1` or `status = 2`. `1` signifies that the algorithm has found a safe sequence while `2`
+signifies that the function ended prematurely. Thus, encountered a deadlock.  
