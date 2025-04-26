@@ -1,6 +1,6 @@
 # Let's Breakdown on How the Algorithm Works
 ---
-## The main steps is as follows:
+## The main steps are as follows:
 > 1. Ask for the <ins>Allocation Matrix</ins>, the <ins>Max Requirement Matrix</ins>, and the <ins>Values of the Resources</ins>.
 > 2. Calculate the <ins>Needs Matrix</ins> by subtracting the Allocation Matrix from the Max Requirement Matrix element-wise.
 > 3. Calculate the <ins>Initial Available Resources</ins> by taking the sum of all the allocations, then subtracting from the Values of the Resources.
