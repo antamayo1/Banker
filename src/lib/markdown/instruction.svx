@@ -1,0 +1,5 @@
+# Welcome!
+
+This is a simple implementation of the **Banker's Algorithm** for detecting deadlocks.
+
+You can input the values of the resources, the allocation table,and the max requirement table. 

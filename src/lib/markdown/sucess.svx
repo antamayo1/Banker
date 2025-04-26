@@ -1,0 +1,14 @@
+<script>
+  export let sequence = [];
+  
+  // You can add any other logic or computed properties here
+  const formatSequence = (seq) => {
+    return seq.join(' → P');
+  };
+</script>
+
+# Success! Your system is in a safe state
+## Safe Sequence:
+<div class="pl-4 bg-success/10 rounded-lg border border-success/30">
+  <p class="font-mono text-lg text-success">P{formatSequence(sequence)}</p>
+</div>

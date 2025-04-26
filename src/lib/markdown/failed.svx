@@ -1,0 +1,16 @@
+<script>
+  export let sequence = [];
+  
+  // You can add any other logic or computed properties here
+  const formatSequence = (seq) => {
+    return seq.join(' → P');
+  };
+</script>
+
+# Deadlock Detected!
+
+## The Sequence:
+<div class="pl-4 bg-error/10 rounded-lg border border-error/30">
+  <p class="font-mono text-lg text-error">P{formatSequence(sequence)} → ?</p>
+</div>
+Note that the last available resources cannot accomodate any of the unfinished processes.
