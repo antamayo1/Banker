@@ -2,6 +2,11 @@
 // * It takes the inputs of allocation, max, and available matrices as discussed in class
 // * with this, the algorithm will check for deadlocks
 export function BankersAlgorithm(allocation: number[][], max: number[][], resources: number[]) {
+	console.log('Initial Allocation:');
+	console.table(allocation);
+	console.log('Maximum Requirement:');
+	console.table(max);
+
 	//! Calculate for the need matrix
 	const need = getNeed(allocation, max);
 
@@ -9,8 +14,12 @@ export function BankersAlgorithm(allocation: number[][], max: number[][], resour
 	let sequence: number[] = [];
 	let available_sequence: number[][] = [];
 
-	available_sequence.push(getAvailable(allocation, resources));
+	available_sequence.push(resources);
 	const process_length = available_sequence[available_sequence.length - 1].length;
+
+	console.log('Available Resources: ', available_sequence[available_sequence.length - 1]);
+	console.log('Need Matrix:');
+	console.table(need);
 
 	//? Apply the Bankers's Algorithm line by line
 	for (let i = 0; i < need.length; i++) {
@@ -41,8 +50,17 @@ export function BankersAlgorithm(allocation: number[][], max: number[][], resour
 	}
 
 	if (sequence.length !== allocation.length) {
+		console.error('Deadlock detected');
+		for (let i = 0; i < need.length; i++) {
+			if (!sequence.includes(i)) {
+				console.error(`Process ${i} is in deadlock`);
+			}
+		}
 		return { available_sequence, need: need, sequence: sequence, status: 2 };
 	} else {
+		console.log('No deadlock detected');
+		console.log('Safe sequence is: ');
+		console.log('P' + sequence.join(' -> P'));
 		return { available_sequence, need: need, sequence: sequence, status: 1 };
 	}
 }
@@ -51,20 +69,6 @@ const getNewAvailable = (allocation: number[], resources: number[]) => {
 	let available: number[] = [];
 	for (let i = 0; i < resources.length; i++) {
 		available[i] = resources[i] + allocation[i];
-	}
-	return available;
-};
-
-//? This function gets the sum of the resources in the allocation matrix
-//? and subtracts it from the resources matrix
-const getAvailable = (allocation: number[][], resources: number[]) => {
-	let available: number[] = [];
-	for (let i = 0; i < resources.length; i++) {
-		let sum = 0;
-		for (let j = 0; j < allocation.length; j++) {
-			sum += allocation[j][i];
-		}
-		available[i] = resources[i] - sum;
 	}
 	return available;
 };
@@ -78,6 +82,5 @@ const getNeed = (allocation: number[][], max: number[][]) => {
 			need[i][j] = max[i][j] - allocation[i][j];
 		}
 	}
-
 	return need;
 };

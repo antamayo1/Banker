@@ -44,28 +44,9 @@
 				resource.value !== null && resource.value !== '' && !isNaN(parseInt(resource.value))
 		);
 
-		const allocationValid = allocation.every((row) =>
-			row.every((cell) => cell !== null && !isNaN(cell) && cell >= 0 && cell !== undefined)
-		);
-		const maxRequirementsValid = maxRequirements.every((row) =>
-			row.every((cell) => cell !== null && !isNaN(cell))
-		);
-
 		if (!resourcesValid) {
 			showToast('Please fill in all resource values', 'error');
 			return;
-		}
-
-		for (let i = 0; i < allocation.length; i++) {
-			for (let j = 0; j < allocation[i].length; j++) {
-				if (allocation[i][j] > maxRequirements[i][j]) {
-					showToast(
-						`Error: Allocation (${allocation[i][j]}) exceeds Max (${maxRequirements[i][j]}) for ${processes[i].name} and resource ${resources[j].name}`,
-						'error'
-					);
-					return;
-				}
-			}
 		}
 
 		let flat_available = [];
@@ -231,7 +212,7 @@
 	<div class="flex w-full max-w-6xl flex-col items-start gap-4 sm:gap-5 md:flex-row">
 		<div class="card bg-base-100 w-full flex-1 shadow-xl md:w-auto">
 			<div class="card-body p-3 sm:p-6">
-				<h2 class="card-title text-lg sm:text-xl">Resources</h2>
+				<h2 class="card-title text-lg sm:text-xl">Available Resources</h2>
 				<div class="-mx-3 overflow-auto sm:mx-0">
 					<table class="table-zebra table-sm sm:table-md table">
 						<thead>
@@ -320,10 +301,10 @@
 		</div>
 	</div>
 
-	<div class="flex w-full max-w-6xl flex-col gap-4 sm:gap-5 md:flex-row">
+	<div class="flex w-full max-w-6xl flex-col gap-4 sm:gap-5 lg:flex-row">
 		<div class="card bg-base-100 w-full flex-1 shadow-xl md:w-auto">
 			<div class="card-body p-3 sm:p-6">
-				<h2 class="card-title text-lg sm:text-xl">Allocation Matrix</h2>
+				<h2 class="card-title text-lg sm:text-xl">Initial Allocation</h2>
 				<div class="-mx-3 overflow-x-auto sm:mx-0">
 					<table class="table-pin-rows table-zebra table-sm sm:table-md table">
 						<thead>
@@ -360,7 +341,7 @@
 
 		<div class="card bg-base-100 w-full flex-1 shadow-xl md:w-auto">
 			<div class="card-body p-3 sm:p-6">
-				<h2 class="card-title text-lg sm:text-xl">Max Requirements Matrix</h2>
+				<h2 class="card-title text-lg sm:text-xl">Maximum Requirement</h2>
 				<div class="-mx-3 overflow-x-auto sm:mx-0">
 					<table class="table-pin-rows table-zebra table-sm sm:table-md table">
 						<thead>
@@ -418,7 +399,7 @@
 			<!-- Needs Matrix -->
 			<div class="card bg-base-100 w-full flex-1 shadow-xl md:w-auto">
 				<div class="card-body p-3 sm:p-6">
-					<h2 class="card-title text-lg sm:text-xl">Calculated Needs Matrix</h2>
+					<h2 class="card-title text-lg sm:text-xl">Calculated Needs</h2>
 					<div class="-mx-3 overflow-x-auto sm:mx-0">
 						<table class="table-pin-rows table-zebra table-sm sm:table-md table">
 							<thead>
@@ -449,7 +430,7 @@
 			<!-- Available Resources Matrix -->
 			<div class="card bg-base-100 w-full flex-1 shadow-xl md:w-auto">
 				<div class="card-body p-3 sm:p-6">
-					<h2 class="card-title text-lg sm:text-xl">Calculated Available Resources Matrix</h2>
+					<h2 class="card-title text-lg sm:text-xl">Calculated Available Resources</h2>
 					<div class="-mx-3 overflow-x-auto sm:mx-0">
 						<table class="table-pin-rows table-zebra table-sm sm:table-md table">
 							<thead>
