@@ -50,12 +50,9 @@ export function BankersAlgorithm(allocation: number[][], max: number[][], resour
 	}
 
 	if (sequence.length !== allocation.length) {
-		console.error('Deadlock detected');
-		for (let i = 0; i < need.length; i++) {
-			if (!sequence.includes(i)) {
-				console.error(`Process ${i} is in deadlock`);
-			}
-		}
+		console.log('Deadlock detected');
+    console.log("Sequence before deadlock:")
+		console.log('P' + sequence.join(' -> P') + ` -> ? `);
 		return { available_sequence, need: need, sequence: sequence, status: 2 };
 	} else {
 		console.log('No deadlock detected');
