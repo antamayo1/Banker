@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Instructions from '$lib/markdown/instruction.svx';
 	import Summary from '$lib/markdown/summary.svx';
 	import Success from '$lib/markdown/sucess.svx';
