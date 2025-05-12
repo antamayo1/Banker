@@ -32,7 +32,9 @@
 				<li><a href="/algorithm" class=" btn btn-ghost">Algorithm Explanation</a></li>
 				<div class="divider"></div>
 				<li class="text-center font-bold">
-					Created by: <a href="https://github.com/antamayo1">Aaron John N. Tamayo</a>
+					Created by: <a href="https://github.com/antamayo1" class="btn btn-ghost"
+						>Aaron John N. Tamayo</a
+					>
 				</li>
 			</ul>
 		</div>
