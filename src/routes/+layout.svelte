@@ -31,8 +31,9 @@
 				</li>
 				<li><a href="/algorithm" class=" btn btn-ghost">Algorithm Explanation</a></li>
 				<div class="divider"></div>
-				<li class="text-center font-bold">Aaron John N. Tamayo</li>
-				<li class="text-center">CMSC-125 Machine Project</li>
+				<li class="text-center font-bold">
+					Created by: <a href="https://github.com/antamayo1">Aaron John N. Tamayo</a>
+				</li>
 			</ul>
 		</div>
 		<a class="btn btn-ghost text-xl" href="/">Banker's Algorithm</a>
