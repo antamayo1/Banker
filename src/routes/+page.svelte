@@ -15,12 +15,11 @@
 	let toastMessage = '';
 	let toastType = 'info';
 
-	function showToast(message, type = 'info', duration = 3000) {
+	function showToast(message: any, type = 'info', duration = 3000) {
 		toastMessage = message;
 		toastType = type;
 		toastVisible = true;
 
-		// Auto hide the toast after duration
 		setTimeout(() => {
 			toastVisible = false;
 		}, duration);
